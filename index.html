@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kairos Mix — Interior Buttons</title>
+<style>
+:root{color-scheme:light dark}
+body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:16px}
+.card{max-width:760px;margin:auto;border:1px solid rgba(127,127,127,.35);border-radius:16px;padding:16px}
+h1{margin:0 0 6px;font-size:22px}
+.sub{opacity:.8;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+button,select{
+ width:100%;padding:12px;border-radius:12px;border:1px solid rgba(127,127,127,.45);
+ font-size:16px;background:transparent;font-weight:800
+}
+.small{font-size:13px;opacity:.85;margin-top:10px}
+.out{margin-top:12px;padding:14px;border-radius:14px;background:rgba(127,127,127,.12)}
+.big{font-size:20px;font-weight:900;margin-top:6px}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(127,127,127,.35);font-size:12px}
+.warn{margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,165,0,.12);border:1px solid rgba(255,165,0,.35)}
+hr{border:none;border-top:1px solid rgba(127,127,127,.25);margin:14px 0}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Kairos Mix <span class="pill">500 ml</span></h1>
+  <p class="sub">Botones por color de interior + modo Vapor. (Agua:APC)</p>
+
+  <label class="small">Modo</label>
+  <select id="mode">
+    <option value="normal" selected>Normal (limpieza interior)</option>
+    <option value="vapor">Vapor (APC para aflojar + vapor)</option>
+  </select>
+
+  <label class="small">Medición</label>
+  <select id="measure">
+    <option value="exact" selected>Exacto (vaso graduado)</option>
+    <option value="easy">Redondeado seguro</option>
+  </select>
+
+  <hr>
+
+  <div class="small">🎨 Botones por combinación</div>
+  <div class="grid" style="margin-top:8px">
+    <button onclick="pick('negro_negro')">Negro - Negro</button>
+    <button onclick="pick('negro_gris')">Negro - Gris</button>
+    <button onclick="pick('blanco_gris')">Blanco - Gris</button>
+    <button onclick="pick('blanco_blanco')">Blanco - Blanco</button>
+  </div>
+
+  <div class="small">🌗 Botones por “claridad”</div>
+  <div class="grid" style="margin-top:8px">
+    <button onclick="pick('claro')">Interior Claro</button>
+    <button onclick="pick('medio_claro')">Medio claro</button>
+    <button onclick="pick('medio_oscuro')">Medio oscuro</button>
+    <button onclick="pick('oscuro')">Oscuro</button>
+  </div>
+
+  <div class="out">
+    <div class="small" id="label">Resultado</div>
+    <div class="big" id="mix">—</div>
+    <div class="small" id="meta">—</div>
+    <div class="warn" id="tips" style="display:none">
+      Tip: En interiores claros, rocía en microfibra (no directo) y seca inmediato.
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL = 500;
+
+// Ratios base por “familia” (Normal). Vapor automáticamente sube (más diluido).
+const RATIOS = {
+  negro_negro: 10,   // interior oscuro tolera más fuerza
+  negro_gris: 12,    // un poco más suave
+  blanco_gris: 15,   // seguro para claros
+  blanco_blanco: 20, // ultra seguro para muy claro / delicado
+
+  claro: 15,
+  medio_claro: 12,
+  medio_oscuro: 10,
+  oscuro: 8
+};
+
+// Para vapor: queremos MÁS diluido. Subimos el número (agua:APC).
+// (Ej: 10:1 normal -> 12:1 o 15:1 vapor)
+function vaporBoost(r){
+  if (r >= 20) return 20;      // ya está muy diluido
+  if (r >= 15) return 15;      // 15 se queda 15
+  if (r >= 12) return 15;      // 12 -> 15 para vapor
+  if (r >= 10) return 12;      // 10 -> 12 para vapor
+  return 12;                   // 8 -> 12 para vapor (más seguro)
+}
+
+function roundEasy(r, apc){
+  // redondeos seguros típicos para vaso medidor
+  if (r >= 20) return 25; // ~23.8 ml -> 25 ml
+  if (r >= 15) return 30; // ~31.3 ml -> 30 ml (seguro)
+  if (r >= 12) return 40; // ~38.5 ml -> 40 ml
+  if (r >= 10) return 50; // ~45.5 ml -> 50 ml
+  return 60;              // ~55.6 ml -> 60 ml
+}
+
+function fmt(n, exact){
+  const dec = exact ? 1 : 0;
+  return n.toFixed(dec);
+}
+
+function compute(ratio){
+  const mode = document.getElementById('mode').value;
+  const measure = document.getElementById('measure').value;
+  const exact = (measure === 'exact');
+
+  let r = ratio;
+  if (mode === 'vapor') r = vaporBoost(r);
+
+  let apc = TOTAL / (r + 1);
+  if (!exact) apc = roundEasy(r, apc);
+
+  const water = TOTAL - apc;
+
+  // output
+  document.getElementById('mix').textContent =
+    `APC ${fmt(apc, exact)} ml  •  Agua ${fmt(water, exact)} ml`;
+
+  document.getElementById('meta').textContent =
+    `${mode === 'vapor' ? 'Vapor' : 'Normal'} • ${r}:1 (agua:APC) • Total 500 ml`;
+
+  // show tip for light interiors / high ratios
+  document.getElementById('tips').style.display = (r >= 15) ? 'block' : 'none';
+}
+
+function pick(key){
+  const base = RATIOS[key] ?? 12;
+  document.getElementById('label').textContent = `Preset: ${key.replaceAll('_',' ')}`;
+  compute(base);
+}
+
+// inicia con un preset seguro tipo Lucie
+pick('blanco_gris');
+</script>
+</body>
+</html>
