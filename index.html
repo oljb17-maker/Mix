@@ -1,92 +1,120 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Kairos Mix — Detailing Edition</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kairos Mix — Basic Detailing</title>
 
 <style>
-  :root{
-    --bg0:#050814;
-    --bg1:#071225;
-    --bg2:#0b1a33;
-    --line:rgba(120,180,255,.22);
-    --glass:rgba(9,16,35,.70);
+  :root{ --radius:18px; }
+
+  /* App variables on #app (Dark default) */
+  #app{
+    --bg0:#050814; --bg1:#071225; --bg2:#0b1a33;
+    --glass: rgba(9,16,35,.70);
+    --line: rgba(120,180,255,.22);
     --txt:#eaf2ff;
-    --muted:rgba(234,242,255,.72);
+    --muted: rgba(234,242,255,.72);
+    --accent1:#7a5cff; --accent2:#23d5ff;
+    --warnBG: rgba(255,170,66,.10);
+    --warnLine: rgba(255,170,66,.28);
+    --okBG: rgba(0,255,170,.10);
+    --okLine: rgba(0,255,170,.25);
 
-    /* Accent (cambia por tema) */
-    --a1:#7a5cff;   /* morado */
-    --a2:#23d5ff;   /* cyan */
-  }
-
-  body{
-    margin:0;
-    font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;
-    color:var(--txt);
+    min-height:100vh;
+    padding:16px;
     background:
       radial-gradient(1000px 600px at 10% 10%, rgba(122,92,255,.35), transparent 55%),
       radial-gradient(900px 500px at 85% 15%, rgba(35,213,255,.25), transparent 55%),
       linear-gradient(160deg,var(--bg0),var(--bg1) 40%, var(--bg2));
-    padding:16px;
+    color:var(--txt);
+    font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;
+  }
+
+  /* Light mode */
+  #app[data-mode="light"]{
+    --bg0:#f6f8ff; --bg1:#eef2ff; --bg2:#e9eeff;
+    --glass: rgba(255,255,255,.78);
+    --line: rgba(10,18,48,.14);
+    --txt:#0a1230;
+    --muted: rgba(10,18,48,.70);
+    --accent1:#3456ff; --accent2:#00b7ff;
+    --warnBG: rgba(255,170,66,.18);
+    --warnLine: rgba(255,170,66,.35);
+    --okBG: rgba(0,160,110,.12);
+    --okLine: rgba(0,160,110,.25);
+
+    background:
+      radial-gradient(1000px 600px at 10% 10%, rgba(52,86,255,.16), transparent 55%),
+      radial-gradient(900px 500px at 85% 15%, rgba(0,183,255,.12), transparent 55%),
+      linear-gradient(160deg,var(--bg0),var(--bg1) 40%, var(--bg2));
   }
 
   .card{
-    max-width:900px;
-    margin:auto;
+    max-width:980px;
+    margin:0 auto;
     background:var(--glass);
     border:1px solid var(--line);
-    border-radius:18px;
+    border-radius:var(--radius);
     padding:16px;
-    box-shadow: 0 12px 50px rgba(0,0,0,.45);
+    box-shadow:0 12px 50px rgba(0,0,0,.35);
     backdrop-filter: blur(10px);
   }
 
   .top{
-    display:flex;
-    gap:12px;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
+    display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
   }
-
-  .brand{
-    display:flex; flex-direction:column; gap:2px;
-  }
-  .brand .k{letter-spacing:.22em; font-weight:900; opacity:.9}
-  .brand .t{font-size:12px; color:var(--muted)}
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .k{ font-weight:900; letter-spacing:.24em; opacity:.95; }
+  .brand .t{ font-size:12px; color:var(--muted); }
 
   .pill{
     padding:8px 12px;
     border-radius:999px;
     border:1px solid var(--line);
     background: linear-gradient(135deg, rgba(122,92,255,.20), rgba(35,213,255,.12));
-    font-weight:800;
+    font-weight:900;
     letter-spacing:.08em;
     font-size:12px;
+    white-space:nowrap;
+  }
+  #app[data-mode="light"] .pill{
+    background: linear-gradient(135deg, rgba(52,86,255,.14), rgba(0,183,255,.08));
   }
 
-  .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
-  .row > *{flex: 1 1 180px;}
+  .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .row > *{ flex:1 1 190px; }
 
-  select, button{
+  select, input, button{
     width:100%;
     padding:12px;
     border-radius:14px;
     border:1px solid var(--line);
     background: rgba(5,10,22,.45);
     color:var(--txt);
-    font-weight:800;
+    font-weight:900;
+  }
+  #app[data-mode="light"] select,
+  #app[data-mode="light"] input,
+  #app[data-mode="light"] button{
+    background: rgba(255,255,255,.72);
   }
 
-  .btn{
+  button.action{
     background: linear-gradient(135deg, rgba(122,92,255,.18), rgba(35,213,255,.10));
   }
-  .btn:hover{ box-shadow: 0 0 14px rgba(122,92,255,.25); }
+  #app[data-mode="light"] button.action{
+    background: linear-gradient(135deg, rgba(52,86,255,.14), rgba(0,183,255,.08));
+  }
 
-  .small{font-size:13px; color:var(--muted); margin-top:10px}
-  .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:8px;}
-  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .small{ font-size:13px; color:var(--muted); margin-top:10px; }
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap:10px;
+    margin-top:8px;
+  }
+  @media (max-width:680px){ .grid{ grid-template-columns: 1fr; } }
 
   .out{
     margin-top:14px;
@@ -95,53 +123,59 @@
     border:1px solid var(--line);
     background: rgba(5,10,22,.35);
   }
-  .big{font-size:20px; font-weight:900; margin-top:6px;}
+  #app[data-mode="light"] .out{ background: rgba(255,255,255,.68); }
+
+  .big{ font-size:20px; font-weight:900; margin-top:6px; }
+
   .hint{
     margin-top:10px;
     padding:10px;
     border-radius:14px;
-    border:1px solid rgba(255,170,66,.22);
-    background: rgba(255,170,66,.08);
+    border:1px solid var(--okLine);
+    background: var(--okBG);
   }
 
-  /* Temas como tu Kairos Flex */
-  .theme-purple{ --a1:#7a5cff; --a2:#23d5ff; }
-  .theme-red   { --a1:#ff3b5c; --a2:#ffb703; }
-  .theme-cyan  { --a1:#23d5ff; --a2:#00ffa3; }
-  .theme-gray  { --a1:#b4c3d6; --a2:#6b7a90; }
-  .theme-light {
-    --bg0:#f6f8ff; --bg1:#eef2ff; --bg2:#e9eeff;
-    --glass:rgba(255,255,255,.70);
-    --txt:#0a1230;
-    --muted:rgba(10,18,48,.70);
-    --line:rgba(10,18,48,.14);
+  .warn{
+    margin-top:10px;
+    padding:10px;
+    border-radius:14px;
+    border:1px solid var(--warnLine);
+    background: var(--warnBG);
   }
+
+  .tabs{
+    display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
+  }
+  .tabs button{
+    flex: 1 1 180px;
+  }
+
+  hr{
+    border:none;
+    height:1px;
+    background: linear-gradient(90deg, transparent, var(--line), transparent);
+    margin:14px 0;
+  }
+
+  .hidden{ display:none !important; }
 </style>
 </head>
 
-<body class="theme-purple">
+<body>
+<div id="app" data-mode="dark">
   <div class="card">
     <div class="top">
       <div class="brand">
         <div class="k">KAIROS</div>
-        <div class="t">Mix • Detailing • Diluciones (APC: Agua)</div>
+        <div class="t">Mix • Basic Detailing • Diluciones (Agua:APC)</div>
       </div>
-      <div class="pill" id="vehiclePill">VEHÍCULO: LUCIE</div>
+      <div class="pill" id="activePill">PRESET: —</div>
     </div>
 
     <div class="row">
-      <select id="theme">
-        <option value="theme-cyan">Cyan / Negro</option>
-        <option value="theme-red">Rojo / Negro</option>
-        <option value="theme-purple" selected>Morado / Negro</option>
-        <option value="theme-gray">Gris / Negro</option>
-        <option value="theme-light">Light / Claro</option>
-      </select>
-
-      <select id="vehicle">
-        <option value="lucie" selected>Lucie (Ioniq 5) — Interior claro</option>
-        <option value="bebe">Bebé (Sonata) — Interior negro/gris</option>
-        <option value="drogon">Drogon (Tucson) — Interior negro/gris</option>
+      <select id="uiMode">
+        <option value="dark" selected>Modo oscuro (actual)</option>
+        <option value="light">Modo claro</option>
       </select>
 
       <select id="total">
@@ -151,225 +185,207 @@
         <option value="1000">1000 ml</option>
       </select>
 
-      <select id="mode">
-        <option value="normal" selected>Normal</option>
-        <option value="vapor">Vapor (pre-spray + vapor)</option>
-      </select>
-    </div>
-
-    <div class="row">
-      <select id="surface">
-        <option value="interior" selected>Interior (plásticos/cuero)</option>
-        <option value="carpet">Alfombras TELA</option>
-        <option value="rubber">Tapetes GOMA</option>
-        <option value="wheels">Rines</option>
-        <option value="tires">Llantas</option>
-        <option value="bugs">Bichos (frente)</option>
-        <option value="engine">Motor (bahía)</option>
-      </select>
-
       <select id="measure">
         <option value="exact" selected>Exacto (vaso graduado)</option>
         <option value="easy">Redondeado seguro</option>
       </select>
 
-      <button class="btn" id="save">📌 Guardar favorito</button>
-      <button class="btn" id="load">⭐ Cargar favorito</button>
+      <input id="customRatio" type="number" min="1" step="1" value="12" placeholder="Custom ratio (agua:APC)" />
     </div>
 
-    <div class="small">Presets rápidos</div>
-    <div class="grid">
-      <button class="btn" onclick="preset('safe')">Seguro (interior claro)</button>
-      <button class="btn" onclick="preset('general')">General (interior oscuro)</button>
-      <button class="btn" onclick="preset('heavy')">Fuerte (alfombras/tapetes)</button>
-      <button class="btn" onclick="preset('ultra')">Ultra suave (mantenimiento)</button>
+    <div class="small">Sección</div>
+    <div class="tabs">
+      <button class="action" id="tabInterior">INTERIOR</button>
+      <button class="action" id="tabExterior">EXTERIOR</button>
+    </div>
+
+    <div id="interiorBlock">
+      <div class="small">INTERIOR presets (plástico/cuero). “Color” = custom ratio.</div>
+      <div class="grid">
+        <button class="action" onclick="setPreset('Interior oscuro', 10, 'interior')">Interior: Oscuro</button>
+        <button class="action" onclick="setPreset('Interior oscuro/gris', 12, 'interior')">Interior: Oscuro/Gris</button>
+        <button class="action" onclick="setPreset('Interior claro', 15, 'interior')">Interior: Claro</button>
+        <button class="action" onclick="setPreset('Interior claro/gris', 15, 'interior')">Interior: Claro/Gris</button>
+        <button class="action" onclick="setPreset('Interior: Color (custom)', getCustomRatio(), 'interior')">Interior: Color (custom)</button>
+        <button class="action" onclick="setPreset('Interior ultra suave', 20, 'interior')">Interior: Ultra suave</button>
+      </div>
+    </div>
+
+    <div id="exteriorBlock" class="hidden">
+      <div class="small">EXTERIOR presets (sin espejos/vidrios).</div>
+      <div class="grid">
+        <button class="action" onclick="setPreset('Exterior: Bug remover', 12, 'exterior')">Bug remover</button>
+        <button class="action" onclick="setPreset('Exterior: Llantas + Rines (1 líquido)', 6, 'exterior')">Llantas + Rines (1 líquido)</button>
+        <button class="action" onclick="setPreset('Exterior: Body + Plástico externo', 15, 'exterior')">Body + Plástico externo</button>
+        <button class="action" onclick="setPreset('Exterior: Motor + Bajo capó', 10, 'exterior')">Motor + Bajo capó</button>
+      </div>
+      <div class="small">*Vidrios y espejos NO incluidos (usas tu líquido aparte).</div>
     </div>
 
     <div class="out">
-      <div class="small" id="label">Listo.</div>
+      <div class="small" id="label">Elige un preset.</div>
       <div class="big" id="mix">—</div>
       <div class="small" id="meta">—</div>
-      <div class="hint" id="hint" style="display:none"></div>
+      <div class="hint" id="hint">—</div>
+      <div class="warn" id="warn" style="display:none">—</div>
+    </div>
+
+    <hr>
+    <div class="small">
+      Fórmula: <b>APC = Total / (ratio + 1)</b> • <b>Agua = Total − APC</b> (ratio = agua:APC).<br>
+      Regla: <b>No dejar secar</b>. Trabaja en sombra y superficie fría.
     </div>
   </div>
+</div>
 
 <script>
-  const FAV_KEY = "kairos_mix_detailing_fav_v1";
+  // ====== State ======
+  let currentPreset = { name: null, ratio: null, kind: null };
 
-  // Ratios base (agua:APC) por tipo de trabajo
-  // OJO: más número = más diluido = más suave
-  const SURFACE_RATIOS = {
-    // interior se decide por vehículo
-    carpet: 8,
-    rubber: 6,
-    wheels: 10,
-    tires: 4,
-    bugs: 12,
-    engine: 10
-  };
+  const app = document.getElementById("app");
+  const uiMode = document.getElementById("uiMode");
+  const totalSel = document.getElementById("total");
+  const measureSel = document.getElementById("measure");
+  const customRatioInp = document.getElementById("customRatio");
 
-  const VEHICLE_DEFAULTS = {
-    lucie: { interior: 15 },      // claro seguro
-    bebe:  { interior: 10 },      // oscuro general
-    drogon:{ interior: 10 }       // oscuro general
-  };
+  const pill = document.getElementById("activePill");
+  const label = document.getElementById("label");
+  const mix = document.getElementById("mix");
+  const meta = document.getElementById("meta");
+  const hint = document.getElementById("hint");
+  const warn = document.getElementById("warn");
 
-  function vaporBoost(r){
-    // vapor = más suave (subir ratio)
-    if (r >= 15) return r;
-    if (r >= 12) return 15;
-    if (r >= 10) return 12;
-    return 12;
+  // Tabs
+  const tabInterior = document.getElementById("tabInterior");
+  const tabExterior = document.getElementById("tabExterior");
+  const interiorBlock = document.getElementById("interiorBlock");
+  const exteriorBlock = document.getElementById("exteriorBlock");
+
+  tabInterior.addEventListener("click", ()=>{
+    interiorBlock.classList.remove("hidden");
+    exteriorBlock.classList.add("hidden");
+  });
+  tabExterior.addEventListener("click", ()=>{
+    exteriorBlock.classList.remove("hidden");
+    interiorBlock.classList.add("hidden");
+  });
+
+  // ====== Helpers ======
+  function getCustomRatio(){
+    const r = parseInt(customRatioInp.value, 10);
+    return (Number.isFinite(r) && r >= 1) ? r : 12;
   }
 
   function roundEasy(total, ratio){
-    // medidas fáciles (ml) — seguras
-    if (ratio >= 20) return Math.round(total*0.05/5)*5;
-    if (ratio >= 15) return Math.round(total*0.06/5)*5;
-    if (ratio >= 12) return Math.round(total*0.08/5)*5;
-    if (ratio >= 10) return Math.round(total*0.10/5)*5;
-    if (ratio >= 8)  return Math.round(total*0.12/5)*5;
-    return Math.round((total/(ratio+1))/5)*5;
+    // simple + safe rounding to nearest 5ml for APC
+    const apcExact = total / (ratio + 1);
+    return Math.max(5, Math.round(apcExact / 5) * 5);
   }
 
-  function compute(customLabel){
-    const vehicle = document.getElementById("vehicle").value;
-    const total = +document.getElementById("total").value;
-    const mode = document.getElementById("mode").value;
-    const surface = document.getElementById("surface").value;
-    const measure = document.getElementById("measure").value;
+  function setPreset(name, ratio, kind){
+    // kind: 'interior' | 'exterior'
+    ratio = parseInt(ratio, 10);
+    if (!Number.isFinite(ratio) || ratio < 1) ratio = 12;
 
-    let ratio;
+    currentPreset = { name, ratio, kind };
+    pill.textContent = `PRESET: ${name.toUpperCase()}`;
+    compute();
+  }
 
-    if (surface === "interior"){
-      ratio = VEHICLE_DEFAULTS[vehicle].interior; // Lucie 15, Bebé/Drogon 10
-    } else {
-      ratio = SURFACE_RATIOS[surface] ?? 12;
+  function compute(){
+    if (!currentPreset.ratio){
+      label.textContent = "Elige un preset.";
+      mix.textContent = "—";
+      meta.textContent = "—";
+      hint.textContent = "—";
+      warn.style.display = "none";
+      return;
     }
 
-    if (mode === "vapor") ratio = vaporBoost(ratio);
+    const total = parseFloat(totalSel.value);
+    const ratio = currentPreset.ratio;
+    const measure = measureSel.value;
 
     let apc = total / (ratio + 1);
     if (measure === "easy") apc = roundEasy(total, ratio);
 
     const water = total - apc;
 
-    document.getElementById("mix").textContent =
-      `APC ${apc.toFixed(measure==="easy"?0:1)} ml  •  Agua ${water.toFixed(measure==="easy"?0:1)} ml`;
+    mix.textContent = `APC ${apc.toFixed(measure==="easy"?0:1)} ml  •  Agua ${water.toFixed(measure==="easy"?0:1)} ml`;
+    meta.textContent = `${ratio}:1 (agua:APC) • Total ${total} ml • Medición: ${measure}`;
 
-    const vName = (vehicle==="lucie") ? "Lucie" : (vehicle==="bebe" ? "Bebé (Sonata)" : "Drogon");
-    document.getElementById("vehiclePill").textContent = `VEHÍCULO: ${vName.toUpperCase()}`;
+    label.textContent = currentPreset.name;
 
-    const surfaceName = {
-      interior:"Interior",
-      carpet:"Alfombras TELA",
-      rubber:"Tapetes GOMA",
-      wheels:"Rines",
-      tires:"Llantas",
-      bugs:"Bichos",
-      engine:"Motor"
-    }[surface] || surface;
+    // Context instructions
+    warn.style.display = "none";
+    warn.textContent = "";
 
-    document.getElementById("label").textContent = customLabel || `Modo: ${mode.toUpperCase()} • ${surfaceName}`;
-    document.getElementById("meta").textContent = `${ratio}:1 (agua:APC) • Total ${total} ml • Medición: ${measure}`;
-
-    const hint = document.getElementById("hint");
-    hint.style.display = "block";
-
-    // Consejos contextuales
-    if (surface === "interior" && ratio >= 15){
-      hint.innerHTML = "Interior claro: rocía en microfibra (no directo), seca inmediato. Pantallas: sin APC/sin vapor.";
-    } else if (surface === "tires"){
-      hint.innerHTML = "Llantas: cepillo + enjuague. No dejar secar. Luego dressing si quieres brillo.";
-    } else if (surface === "engine"){
-      hint.innerHTML = "Motor: frío, evita alternador/fusibles, enjuague ligero y seca.";
-    } else if (surface === "carpet"){
-      hint.innerHTML = "Alfombra tela: APC + cepillo, luego vapor suave. Aspirado húmedo si tienes.";
-    } else {
-      hint.innerHTML = "Regla Kairos: APC afloja → vapor levanta → microfibra retira.";
+    if (currentPreset.kind === "interior"){
+      if (ratio >= 15){
+        hint.innerHTML = "Interior claro: rocía en microfibra (no directo), limpia suave y seca inmediato. Evita empapar botones.";
+      } else if (ratio >= 12){
+        hint.innerHTML = "Interior normal: microfibra + 2 pasadas si hace falta. No dejar residuo, seca al final.";
+      } else {
+        hint.innerHTML = "Interior más fuerte: úsalo solo en zonas resistentes (umbral/plásticos bajos). Prueba en un área pequeña.";
+        warn.style.display = "block";
+        warn.textContent = "⚠️ Mezcla fuerte para interior: evita tablero delicado, piano black y zonas sensibles.";
+      }
+      return;
     }
+
+    // Exterior
+    const n = currentPreset.name.toLowerCase();
+
+    if (n.includes("bug")){
+      hint.innerHTML = "Bug remover: aplicar en frío, esperar 30–60s, retirar con microfibra húmeda y enjuagar. No raspar en seco.";
+      return;
+    }
+
+    if (n.includes("llantas") || n.includes("rines")){
+      hint.innerHTML = "Llantas + rines (1 líquido 6:1): aplicar en frío, 30–45s, cepillar primero llanta y luego rin, enjuagar fuerte. No dejar secar.";
+      warn.style.display = "block";
+      warn.textContent = "⚠️ Evita superficies calientes. Si el rin es delicado (cromo viejo/pulido), usa más suave (10:1).";
+      return;
+    }
+
+    if (n.includes("body")){
+      hint.innerHTML = "Body + plástico externo: ideal para insectos ligeros y grasa suave. Trabaja por secciones y enjuaga bien.";
+      warn.style.display = "block";
+      warn.textContent = "⚠️ No usar como shampoo en toda la carrocería: úsalo puntual y enjuaga. Evita que se seque.";
+      return;
+    }
+
+    if (n.includes("motor")){
+      hint.innerHTML = "Motor + bajo capó: motor frío, evita alternador/fusibles/sensores, brocha suave, enjuague ligero y secar.";
+      warn.style.display = "block";
+      warn.textContent = "⚠️ No empapar conectores. No trabajar con motor caliente.";
+      return;
+    }
+
+    hint.innerHTML = "Exterior: trabajar en sombra/superficie fría. No dejar secar. Enjuagar bien.";
   }
 
-  function preset(kind){
-    // presets rápidos que respetan el tamaño/modo/medición
-    const surface = document.getElementById("surface");
-    const vehicle = document.getElementById("vehicle").value;
+  // ====== UI mode (dark/light) ======
+  uiMode.addEventListener("change", ()=>{
+    app.setAttribute("data-mode", uiMode.value);
+    localStorage.setItem("kairos_mix_basic_uimode", uiMode.value);
+  });
 
-    if (kind === "safe"){
-      surface.value = "interior";
-      // fuerza interior claro (Lucie) aunque estés en Bebé/Drogon: subimos ratio a 15 temporalmente
-      VEHICLE_DEFAULTS[vehicle].interior = Math.max(VEHICLE_DEFAULTS[vehicle].interior, 15);
-      compute("Preset: SEGURO (suave)");
-      // devolvemos defaults (para no “romper” el auto)
-      VEHICLE_DEFAULTS.lucie.interior = 15;
-      VEHICLE_DEFAULTS.bebe.interior = 10;
-      VEHICLE_DEFAULTS.drogon.interior = 10;
-      return;
-    }
+  // Recompute if sizing/measure/custom changes
+  [totalSel, measureSel, customRatioInp].forEach(el=>{
+    el.addEventListener("change", ()=>{ if(currentPreset.ratio) compute(); });
+    el.addEventListener("input", ()=>{ /* live update for custom */ });
+  });
 
-    if (kind === "general"){
-      surface.value = "interior";
-      compute("Preset: GENERAL (interior oscuro)");
-      return;
-    }
-
-    if (kind === "heavy"){
-      surface.value = "carpet";
-      compute("Preset: FUERTE (alfombras/tapetes)");
-      return;
-    }
-
-    if (kind === "ultra"){
-      surface.value = "interior";
-      // ultra suave: 20:1 temporal
-      const old = VEHICLE_DEFAULTS[vehicle].interior;
-      VEHICLE_DEFAULTS[vehicle].interior = 20;
-      compute("Preset: ULTRA SUAVE (mantenimiento)");
-      VEHICLE_DEFAULTS[vehicle].interior = old;
-      return;
-    }
+  // Restore mode
+  const savedMode = localStorage.getItem("kairos_mix_basic_uimode");
+  if (savedMode){
+    uiMode.value = savedMode;
+    app.setAttribute("data-mode", savedMode);
   }
 
-  // Tema como tu Kairos Flex
-  document.getElementById("theme").addEventListener("change", (e)=>{
-    document.body.className = e.target.value;
-  });
-
-  // Recalcular al cambiar selects
-  ["vehicle","total","mode","surface","measure"].forEach(id=>{
-    document.getElementById(id).addEventListener("change", ()=>compute());
-  });
-
-  // Favoritos
-  document.getElementById("save").addEventListener("click", ()=>{
-    const fav = {
-      theme: document.getElementById("theme").value,
-      vehicle: document.getElementById("vehicle").value,
-      total: document.getElementById("total").value,
-      mode: document.getElementById("mode").value,
-      surface: document.getElementById("surface").value,
-      measure: document.getElementById("measure").value
-    };
-    localStorage.setItem(FAV_KEY, JSON.stringify(fav));
-    compute("📌 Favorito guardado");
-  });
-
-  document.getElementById("load").addEventListener("click", ()=>{
-    const raw = localStorage.getItem(FAV_KEY);
-    if(!raw){ compute("⭐ No hay favorito guardado"); return; }
-    const fav = JSON.parse(raw);
-    document.getElementById("theme").value = fav.theme || "theme-purple";
-    document.getElementById("vehicle").value = fav.vehicle || "lucie";
-    document.getElementById("total").value = fav.total || "500";
-    document.getElementById("mode").value = fav.mode || "normal";
-    document.getElementById("surface").value = fav.surface || "interior";
-    document.getElementById("measure").value = fav.measure || "exact";
-    document.body.className = document.getElementById("theme").value;
-    compute("⭐ Favorito cargado");
-  });
-
-  // Init
-  compute();
+  // Default starting preset (safe interior)
+  setPreset("Interior claro/gris", 15, "interior");
 </script>
 </body>
 </html>
