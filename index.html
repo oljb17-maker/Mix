@@ -3,181 +3,373 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Kairos Mix — Garage Pro Futuristic</title>
+<title>Kairos Mix — Detailing Edition</title>
 
 <style>
-:root{
-  --bg1:#050814;
-  --bg2:#0a1a2f;
-  --accent:#4fd1ff;
-  --accent2:#9b7bff;
-  --card:#0f1f38cc;
-  --line:#4fd1ff55;
-}
-body{
-  margin:0;
-  font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;
-  background:
-    radial-gradient(circle at 20% 20%, #1b2b55 0%, transparent 40%),
-    radial-gradient(circle at 80% 10%, #3b1f6b 0%, transparent 45%),
-    linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:#e9f1ff;
-  padding:16px;
-}
-.card{
-  max-width:900px;
-  margin:auto;
-  background:var(--card);
-  backdrop-filter: blur(10px);
-  border-radius:18px;
-  border:1px solid var(--line);
-  padding:16px;
-  box-shadow:0 0 40px #000;
-}
-h1{
-  margin:0 0 6px;
-  font-size:22px;
-  letter-spacing:.5px;
-}
-.sub{opacity:.8;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-@media(max-width:640px){.grid{grid-template-columns:1fr}}
-button,select{
-  width:100%;
-  padding:12px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:linear-gradient(145deg,#0c1c33,#0b1626);
-  color:#e9f1ff;
-  font-weight:800;
-  letter-spacing:.3px;
-}
-button:hover{
-  box-shadow:0 0 10px var(--accent);
-}
-.small{font-size:13px;opacity:.8;margin-top:10px}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-.row>*{flex:1 1 180px}
-.out{
-  margin-top:14px;
-  padding:14px;
-  border-radius:14px;
-  background:#071225aa;
-  border:1px solid var(--line);
-}
-.big{font-size:20px;font-weight:900;margin-top:6px}
-.warn{
-  margin-top:10px;
-  padding:10px;
-  border-radius:12px;
-  background:#2a1a0033;
-  border:1px solid #ffae4255;
-}
-.ok{
-  margin-top:10px;
-  padding:10px;
-  border-radius:12px;
-  background:#00332655;
-  border:1px solid #44ffbb55;
-}
-hr{
-  border:none;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--line),transparent);
-  margin:14px 0;
-}
+  :root{
+    --bg0:#050814;
+    --bg1:#071225;
+    --bg2:#0b1a33;
+    --line:rgba(120,180,255,.22);
+    --glass:rgba(9,16,35,.70);
+    --txt:#eaf2ff;
+    --muted:rgba(234,242,255,.72);
+
+    /* Accent (cambia por tema) */
+    --a1:#7a5cff;   /* morado */
+    --a2:#23d5ff;   /* cyan */
+  }
+
+  body{
+    margin:0;
+    font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;
+    color:var(--txt);
+    background:
+      radial-gradient(1000px 600px at 10% 10%, rgba(122,92,255,.35), transparent 55%),
+      radial-gradient(900px 500px at 85% 15%, rgba(35,213,255,.25), transparent 55%),
+      linear-gradient(160deg,var(--bg0),var(--bg1) 40%, var(--bg2));
+    padding:16px;
+  }
+
+  .card{
+    max-width:900px;
+    margin:auto;
+    background:var(--glass);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px;
+    box-shadow: 0 12px 50px rgba(0,0,0,.45);
+    backdrop-filter: blur(10px);
+  }
+
+  .top{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+
+  .brand{
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .brand .k{letter-spacing:.22em; font-weight:900; opacity:.9}
+  .brand .t{font-size:12px; color:var(--muted)}
+
+  .pill{
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background: linear-gradient(135deg, rgba(122,92,255,.20), rgba(35,213,255,.12));
+    font-weight:800;
+    letter-spacing:.08em;
+    font-size:12px;
+  }
+
+  .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  .row > *{flex: 1 1 180px;}
+
+  select, button{
+    width:100%;
+    padding:12px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background: rgba(5,10,22,.45);
+    color:var(--txt);
+    font-weight:800;
+  }
+
+  .btn{
+    background: linear-gradient(135deg, rgba(122,92,255,.18), rgba(35,213,255,.10));
+  }
+  .btn:hover{ box-shadow: 0 0 14px rgba(122,92,255,.25); }
+
+  .small{font-size:13px; color:var(--muted); margin-top:10px}
+  .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:8px;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+  .out{
+    margin-top:14px;
+    padding:14px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    background: rgba(5,10,22,.35);
+  }
+  .big{font-size:20px; font-weight:900; margin-top:6px;}
+  .hint{
+    margin-top:10px;
+    padding:10px;
+    border-radius:14px;
+    border:1px solid rgba(255,170,66,.22);
+    background: rgba(255,170,66,.08);
+  }
+
+  /* Temas como tu Kairos Flex */
+  .theme-purple{ --a1:#7a5cff; --a2:#23d5ff; }
+  .theme-red   { --a1:#ff3b5c; --a2:#ffb703; }
+  .theme-cyan  { --a1:#23d5ff; --a2:#00ffa3; }
+  .theme-gray  { --a1:#b4c3d6; --a2:#6b7a90; }
+  .theme-light {
+    --bg0:#f6f8ff; --bg1:#eef2ff; --bg2:#e9eeff;
+    --glass:rgba(255,255,255,.70);
+    --txt:#0a1230;
+    --muted:rgba(10,18,48,.70);
+    --line:rgba(10,18,48,.14);
+  }
 </style>
 </head>
 
-<body>
-<div class="card">
-<h1>KAIROS MIX <span style="color:var(--accent)">GARAGE PRO</span></h1>
-<div class="sub">APC • Interior • Alfombras • Vapor • 250–1000 ml</div>
+<body class="theme-purple">
+  <div class="card">
+    <div class="top">
+      <div class="brand">
+        <div class="k">KAIROS</div>
+        <div class="t">Mix • Detailing • Diluciones (APC: Agua)</div>
+      </div>
+      <div class="pill" id="vehiclePill">VEHÍCULO: LUCIE</div>
+    </div>
 
-<div class="row">
-  <select id="total">
-    <option value="250">250 ml</option>
-    <option value="500" selected>500 ml</option>
-    <option value="750">750 ml</option>
-    <option value="1000">1000 ml</option>
-  </select>
-  <select id="mode">
-    <option value="normal">Normal</option>
-    <option value="vapor">Vapor</option>
-  </select>
-  <select id="measure">
-    <option value="exact">Exacto</option>
-    <option value="easy">Redondeado</option>
-  </select>
-</div>
+    <div class="row">
+      <select id="theme">
+        <option value="theme-cyan">Cyan / Negro</option>
+        <option value="theme-red">Rojo / Negro</option>
+        <option value="theme-purple" selected>Morado / Negro</option>
+        <option value="theme-gray">Gris / Negro</option>
+        <option value="theme-light">Light / Claro</option>
+      </select>
 
-<hr>
+      <select id="vehicle">
+        <option value="lucie" selected>Lucie (Ioniq 5) — Interior claro</option>
+        <option value="bebe">Bebé (Sonata) — Interior negro/gris</option>
+        <option value="drogon">Drogon (Tucson) — Interior negro/gris</option>
+      </select>
 
-<div class="small">🎨 INTERIOR</div>
-<div class="grid">
-  <button onclick="setBase(15)">Blanco – Gris (Lucie)</button>
-  <button onclick="setBase(12)">Negro – Gris</button>
-  <button onclick="setBase(10)">Negro – Negro</button>
-  <button onclick="setBase(20)">Blanco – Blanco</button>
-</div>
+      <select id="total">
+        <option value="250">250 ml</option>
+        <option value="500" selected>500 ml</option>
+        <option value="750">750 ml</option>
+        <option value="1000">1000 ml</option>
+      </select>
 
-<hr>
+      <select id="mode">
+        <option value="normal" selected>Normal</option>
+        <option value="vapor">Vapor (pre-spray + vapor)</option>
+      </select>
+    </div>
 
-<div class="small">🧽 ALFOMBRAS / TAPETES</div>
-<div class="grid">
-  <button onclick="setBase(8,'Alfombra de TELA')">Alfombra TELA</button>
-  <button onclick="setBase(6,'Tapete de GOMA')">Tapete GOMA</button>
-</div>
+    <div class="row">
+      <select id="surface">
+        <option value="interior" selected>Interior (plásticos/cuero)</option>
+        <option value="carpet">Alfombras TELA</option>
+        <option value="rubber">Tapetes GOMA</option>
+        <option value="wheels">Rines</option>
+        <option value="tires">Llantas</option>
+        <option value="bugs">Bichos (frente)</option>
+        <option value="engine">Motor (bahía)</option>
+      </select>
 
-<div class="out">
-  <div class="small" id="label">Preset</div>
-  <div class="big" id="mix">—</div>
-  <div class="small" id="meta">—</div>
+      <select id="measure">
+        <option value="exact" selected>Exacto (vaso graduado)</option>
+        <option value="easy">Redondeado seguro</option>
+      </select>
 
-  <div class="warn" id="warn" style="display:none">
-    ⚠️ Mezcla fuerte: solo alfombras / plásticos bajos.
+      <button class="btn" id="save">📌 Guardar favorito</button>
+      <button class="btn" id="load">⭐ Cargar favorito</button>
+    </div>
+
+    <div class="small">Presets rápidos</div>
+    <div class="grid">
+      <button class="btn" onclick="preset('safe')">Seguro (interior claro)</button>
+      <button class="btn" onclick="preset('general')">General (interior oscuro)</button>
+      <button class="btn" onclick="preset('heavy')">Fuerte (alfombras/tapetes)</button>
+      <button class="btn" onclick="preset('ultra')">Ultra suave (mantenimiento)</button>
+    </div>
+
+    <div class="out">
+      <div class="small" id="label">Listo.</div>
+      <div class="big" id="mix">—</div>
+      <div class="small" id="meta">—</div>
+      <div class="hint" id="hint" style="display:none"></div>
+    </div>
   </div>
-  <div class="ok" id="ok" style="display:none"></div>
-</div>
-</div>
 
 <script>
-let baseRatio=15, labelText="Blanco–Gris";
+  const FAV_KEY = "kairos_mix_detailing_fav_v1";
 
-function setBase(r,label){
-  baseRatio=r;
-  labelText=label||"Interior";
-  compute();
-}
+  // Ratios base (agua:APC) por tipo de trabajo
+  // OJO: más número = más diluido = más suave
+  const SURFACE_RATIOS = {
+    // interior se decide por vehículo
+    carpet: 8,
+    rubber: 6,
+    wheels: 10,
+    tires: 4,
+    bugs: 12,
+    engine: 10
+  };
 
-function compute(){
-  const total=+document.getElementById("total").value;
-  const mode=document.getElementById("mode").value;
-  const easy=document.getElementById("measure").value==="easy";
+  const VEHICLE_DEFAULTS = {
+    lucie: { interior: 15 },      // claro seguro
+    bebe:  { interior: 10 },      // oscuro general
+    drogon:{ interior: 10 }       // oscuro general
+  };
 
-  let r=baseRatio;
-  if(mode==="vapor" && r<15) r+=2;
-
-  let apc=total/(r+1);
-  if(easy){
-    if(r>=15) apc=30;
-    else if(r>=12) apc=40;
-    else if(r>=10) apc=50;
-    else apc=60;
+  function vaporBoost(r){
+    // vapor = más suave (subir ratio)
+    if (r >= 15) return r;
+    if (r >= 12) return 15;
+    if (r >= 10) return 12;
+    return 12;
   }
-  const water=total-apc;
 
-  document.getElementById("mix").textContent=
-    `APC ${apc.toFixed(0)} ml  •  Agua ${water.toFixed(0)} ml`;
-  document.getElementById("meta").textContent=
-    `${labelText} • ${mode} • ${r}:1 • Total ${total} ml`;
+  function roundEasy(total, ratio){
+    // medidas fáciles (ml) — seguras
+    if (ratio >= 20) return Math.round(total*0.05/5)*5;
+    if (ratio >= 15) return Math.round(total*0.06/5)*5;
+    if (ratio >= 12) return Math.round(total*0.08/5)*5;
+    if (ratio >= 10) return Math.round(total*0.10/5)*5;
+    if (ratio >= 8)  return Math.round(total*0.12/5)*5;
+    return Math.round((total/(ratio+1))/5)*5;
+  }
 
-  document.getElementById("warn").style.display=r<=8?"block":"none";
-  document.getElementById("ok").style.display="block";
-  document.getElementById("ok").innerHTML=
-    "✔ APC afloja → vapor levanta → microfibra retira";
-}
-compute();
+  function compute(customLabel){
+    const vehicle = document.getElementById("vehicle").value;
+    const total = +document.getElementById("total").value;
+    const mode = document.getElementById("mode").value;
+    const surface = document.getElementById("surface").value;
+    const measure = document.getElementById("measure").value;
+
+    let ratio;
+
+    if (surface === "interior"){
+      ratio = VEHICLE_DEFAULTS[vehicle].interior; // Lucie 15, Bebé/Drogon 10
+    } else {
+      ratio = SURFACE_RATIOS[surface] ?? 12;
+    }
+
+    if (mode === "vapor") ratio = vaporBoost(ratio);
+
+    let apc = total / (ratio + 1);
+    if (measure === "easy") apc = roundEasy(total, ratio);
+
+    const water = total - apc;
+
+    document.getElementById("mix").textContent =
+      `APC ${apc.toFixed(measure==="easy"?0:1)} ml  •  Agua ${water.toFixed(measure==="easy"?0:1)} ml`;
+
+    const vName = (vehicle==="lucie") ? "Lucie" : (vehicle==="bebe" ? "Bebé (Sonata)" : "Drogon");
+    document.getElementById("vehiclePill").textContent = `VEHÍCULO: ${vName.toUpperCase()}`;
+
+    const surfaceName = {
+      interior:"Interior",
+      carpet:"Alfombras TELA",
+      rubber:"Tapetes GOMA",
+      wheels:"Rines",
+      tires:"Llantas",
+      bugs:"Bichos",
+      engine:"Motor"
+    }[surface] || surface;
+
+    document.getElementById("label").textContent = customLabel || `Modo: ${mode.toUpperCase()} • ${surfaceName}`;
+    document.getElementById("meta").textContent = `${ratio}:1 (agua:APC) • Total ${total} ml • Medición: ${measure}`;
+
+    const hint = document.getElementById("hint");
+    hint.style.display = "block";
+
+    // Consejos contextuales
+    if (surface === "interior" && ratio >= 15){
+      hint.innerHTML = "Interior claro: rocía en microfibra (no directo), seca inmediato. Pantallas: sin APC/sin vapor.";
+    } else if (surface === "tires"){
+      hint.innerHTML = "Llantas: cepillo + enjuague. No dejar secar. Luego dressing si quieres brillo.";
+    } else if (surface === "engine"){
+      hint.innerHTML = "Motor: frío, evita alternador/fusibles, enjuague ligero y seca.";
+    } else if (surface === "carpet"){
+      hint.innerHTML = "Alfombra tela: APC + cepillo, luego vapor suave. Aspirado húmedo si tienes.";
+    } else {
+      hint.innerHTML = "Regla Kairos: APC afloja → vapor levanta → microfibra retira.";
+    }
+  }
+
+  function preset(kind){
+    // presets rápidos que respetan el tamaño/modo/medición
+    const surface = document.getElementById("surface");
+    const vehicle = document.getElementById("vehicle").value;
+
+    if (kind === "safe"){
+      surface.value = "interior";
+      // fuerza interior claro (Lucie) aunque estés en Bebé/Drogon: subimos ratio a 15 temporalmente
+      VEHICLE_DEFAULTS[vehicle].interior = Math.max(VEHICLE_DEFAULTS[vehicle].interior, 15);
+      compute("Preset: SEGURO (suave)");
+      // devolvemos defaults (para no “romper” el auto)
+      VEHICLE_DEFAULTS.lucie.interior = 15;
+      VEHICLE_DEFAULTS.bebe.interior = 10;
+      VEHICLE_DEFAULTS.drogon.interior = 10;
+      return;
+    }
+
+    if (kind === "general"){
+      surface.value = "interior";
+      compute("Preset: GENERAL (interior oscuro)");
+      return;
+    }
+
+    if (kind === "heavy"){
+      surface.value = "carpet";
+      compute("Preset: FUERTE (alfombras/tapetes)");
+      return;
+    }
+
+    if (kind === "ultra"){
+      surface.value = "interior";
+      // ultra suave: 20:1 temporal
+      const old = VEHICLE_DEFAULTS[vehicle].interior;
+      VEHICLE_DEFAULTS[vehicle].interior = 20;
+      compute("Preset: ULTRA SUAVE (mantenimiento)");
+      VEHICLE_DEFAULTS[vehicle].interior = old;
+      return;
+    }
+  }
+
+  // Tema como tu Kairos Flex
+  document.getElementById("theme").addEventListener("change", (e)=>{
+    document.body.className = e.target.value;
+  });
+
+  // Recalcular al cambiar selects
+  ["vehicle","total","mode","surface","measure"].forEach(id=>{
+    document.getElementById(id).addEventListener("change", ()=>compute());
+  });
+
+  // Favoritos
+  document.getElementById("save").addEventListener("click", ()=>{
+    const fav = {
+      theme: document.getElementById("theme").value,
+      vehicle: document.getElementById("vehicle").value,
+      total: document.getElementById("total").value,
+      mode: document.getElementById("mode").value,
+      surface: document.getElementById("surface").value,
+      measure: document.getElementById("measure").value
+    };
+    localStorage.setItem(FAV_KEY, JSON.stringify(fav));
+    compute("📌 Favorito guardado");
+  });
+
+  document.getElementById("load").addEventListener("click", ()=>{
+    const raw = localStorage.getItem(FAV_KEY);
+    if(!raw){ compute("⭐ No hay favorito guardado"); return; }
+    const fav = JSON.parse(raw);
+    document.getElementById("theme").value = fav.theme || "theme-purple";
+    document.getElementById("vehicle").value = fav.vehicle || "lucie";
+    document.getElementById("total").value = fav.total || "500";
+    document.getElementById("mode").value = fav.mode || "normal";
+    document.getElementById("surface").value = fav.surface || "interior";
+    document.getElementById("measure").value = fav.measure || "exact";
+    document.body.className = document.getElementById("theme").value;
+    compute("⭐ Favorito cargado");
+  });
+
+  // Init
+  compute();
 </script>
 </body>
 </html>
