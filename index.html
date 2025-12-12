@@ -3,47 +3,78 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Kairos Mix — Interior Buttons</title>
+<title>Kairos Mix — Garage Pro</title>
 <style>
 :root{color-scheme:light dark}
 body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:16px}
-.card{max-width:760px;margin:auto;border:1px solid rgba(127,127,127,.35);border-radius:16px;padding:16px}
+.card{max-width:860px;margin:auto;border:1px solid rgba(127,127,127,.35);border-radius:16px;padding:16px}
 h1{margin:0 0 6px;font-size:22px}
 .sub{opacity:.8;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-@media (max-width:560px){.grid{grid-template-columns:1fr}}
-button,select{
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+button,select,input{
  width:100%;padding:12px;border-radius:12px;border:1px solid rgba(127,127,127,.45);
  font-size:16px;background:transparent;font-weight:800
 }
 .small{font-size:13px;opacity:.85;margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > *{flex:1 1 180px}
 .out{margin-top:12px;padding:14px;border-radius:14px;background:rgba(127,127,127,.12)}
 .big{font-size:20px;font-weight:900;margin-top:6px}
 .pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(127,127,127,.35);font-size:12px}
 .warn{margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,165,0,.12);border:1px solid rgba(255,165,0,.35)}
+.ok{margin-top:10px;padding:10px;border-radius:12px;background:rgba(0,255,170,.10);border:1px solid rgba(0,255,170,.25)}
 hr{border:none;border-top:1px solid rgba(127,127,127,.25);margin:14px 0}
+kbd{border:1px solid rgba(127,127,127,.45);padding:2px 6px;border-radius:8px;font-size:12px;opacity:.9}
 </style>
 </head>
 <body>
 <div class="card">
-  <h1>Kairos Mix <span class="pill">500 ml</span></h1>
-  <p class="sub">Botones por color de interior + modo Vapor. (Agua:APC)</p>
+  <h1>Kairos Mix <span class="pill">Garage Pro</span></h1>
+  <p class="sub">APC + Agua • calcula por color, claridad, zona y tamaño. (Agua:APC)</p>
 
-  <label class="small">Modo</label>
-  <select id="mode">
-    <option value="normal" selected>Normal (limpieza interior)</option>
-    <option value="vapor">Vapor (APC para aflojar + vapor)</option>
-  </select>
+  <div class="row">
+    <div>
+      <div class="small">Tamaño del contenedor</div>
+      <select id="total">
+        <option value="250">250 ml</option>
+        <option value="500" selected>500 ml</option>
+        <option value="750">750 ml</option>
+        <option value="1000">1000 ml</option>
+      </select>
+    </div>
 
-  <label class="small">Medición</label>
-  <select id="measure">
-    <option value="exact" selected>Exacto (vaso graduado)</option>
-    <option value="easy">Redondeado seguro</option>
-  </select>
+    <div>
+      <div class="small">Modo</div>
+      <select id="mode">
+        <option value="normal" selected>Normal (limpieza interior)</option>
+        <option value="vapor">Vapor (pre-spray para aflojar + vapor)</option>
+      </select>
+    </div>
+
+    <div>
+      <div class="small">Medición</div>
+      <select id="measure">
+        <option value="exact" selected>Exacto (vaso graduado)</option>
+        <option value="easy">Redondeado seguro</option>
+      </select>
+    </div>
+
+    <div>
+      <div class="small">Zona</div>
+      <select id="zone">
+        <option value="dash" selected>Tablero (delicado)</option>
+        <option value="doors">Puertas / paneles</option>
+        <option value="console">Consola central (más tocada)</option>
+        <option value="wheel">Volante / palanca</option>
+        <option value="lower">Plásticos bajos (umbral / kick panel)</option>
+      </select>
+    </div>
+  </div>
 
   <hr>
 
-  <div class="small">🎨 Botones por combinación</div>
+  <div class="small">🎨 Por combinación de interior</div>
   <div class="grid" style="margin-top:8px">
     <button onclick="pick('negro_negro')">Negro - Negro</button>
     <button onclick="pick('negro_gris')">Negro - Gris</button>
@@ -51,7 +82,7 @@ hr{border:none;border-top:1px solid rgba(127,127,127,.25);margin:14px 0}
     <button onclick="pick('blanco_blanco')">Blanco - Blanco</button>
   </div>
 
-  <div class="small">🌗 Botones por “claridad”</div>
+  <div class="small">🌗 Por claridad</div>
   <div class="grid" style="margin-top:8px">
     <button onclick="pick('claro')">Interior Claro</button>
     <button onclick="pick('medio_claro')">Medio claro</button>
@@ -59,25 +90,37 @@ hr{border:none;border-top:1px solid rgba(127,127,127,.25);margin:14px 0}
     <button onclick="pick('oscuro')">Oscuro</button>
   </div>
 
+  <div class="row" style="margin-top:10px">
+    <button onclick="saveFav()">📌 Guardar favorito</button>
+    <button onclick="loadFav()">⭐ Cargar favorito</button>
+    <button onclick="resetUI()">↺ Reset</button>
+  </div>
+
   <div class="out">
-    <div class="small" id="label">Resultado</div>
+    <div class="small" id="label">Preset: —</div>
     <div class="big" id="mix">—</div>
     <div class="small" id="meta">—</div>
+
     <div class="warn" id="tips" style="display:none">
-      Tip: En interiores claros, rocía en microfibra (no directo) y seca inmediato.
+      Interior claro: rocía en microfibra (no directo), seca inmediato, vapor suave y rápido. Pantallas: NO APC / NO vapor.
     </div>
+    <div class="ok" id="quick" style="display:none"></div>
+  </div>
+
+  <div class="small" style="margin-top:12px">
+    Atajos: <kbd>Vapor</kbd> sube dilución (más seguro). <kbd>Zona</kbd> ajusta 1–2 pasos. <kbd>Redondeado</kbd> te da medidas fáciles.
   </div>
 </div>
 
 <script>
-const TOTAL = 500;
-
-// Ratios base por “familia” (Normal). Vapor automáticamente sube (más diluido).
-const RATIOS = {
-  negro_negro: 10,   // interior oscuro tolera más fuerza
-  negro_gris: 12,    // un poco más suave
-  blanco_gris: 15,   // seguro para claros
-  blanco_blanco: 20, // ultra seguro para muy claro / delicado
+// =====================
+// BASE RATIOS (Agua:APC)
+// =====================
+const BASE = {
+  negro_negro: 10,
+  negro_gris: 12,
+  blanco_gris: 15,
+  blanco_blanco: 20,
 
   claro: 15,
   medio_claro: 12,
@@ -85,23 +128,49 @@ const RATIOS = {
   oscuro: 8
 };
 
-// Para vapor: queremos MÁS diluido. Subimos el número (agua:APC).
-// (Ej: 10:1 normal -> 12:1 o 15:1 vapor)
+// =====================
+// Vapor: hacerlo MÁS diluido
+// =====================
 function vaporBoost(r){
-  if (r >= 20) return 20;      // ya está muy diluido
-  if (r >= 15) return 15;      // 15 se queda 15
-  if (r >= 12) return 15;      // 12 -> 15 para vapor
-  if (r >= 10) return 12;      // 10 -> 12 para vapor
-  return 12;                   // 8 -> 12 para vapor (más seguro)
+  if (r >= 20) return 20;
+  if (r >= 15) return 15;
+  if (r >= 12) return 15; // 12 -> 15
+  if (r >= 10) return 12; // 10 -> 12
+  return 12;              // 8 -> 12
 }
 
-function roundEasy(r, apc){
-  // redondeos seguros típicos para vaso medidor
-  if (r >= 20) return 25; // ~23.8 ml -> 25 ml
-  if (r >= 15) return 30; // ~31.3 ml -> 30 ml (seguro)
-  if (r >= 12) return 40; // ~38.5 ml -> 40 ml
-  if (r >= 10) return 50; // ~45.5 ml -> 50 ml
-  return 60;              // ~55.6 ml -> 60 ml
+// =====================
+// Zona: ajustes seguros
+// (subir número = más diluido / más seguro)
+// =====================
+function zoneAdjust(r, zone){
+  // tablero y volante: más suaves
+  if (zone === "dash") return Math.max(r, 12) + (r >= 15 ? 0 : 1);
+  if (zone === "wheel") return Math.max(r, 12); // no muy fuerte
+  // consola: un poco más fuerte (bajar ratio)
+  if (zone === "console") return Math.max(8, r - 2);
+  // puertas: normal
+  if (zone === "doors") return r;
+  // plásticos bajos: toleran más fuerza
+  if (zone === "lower") return Math.max(6, r - 2);
+  return r;
+}
+
+// =====================
+// Redondeos fáciles para vaso
+// calcula APC aproximado según ratio y total
+// =====================
+function roundEasy(total, ratio){
+  // apc exact
+  const apcExact = total / (ratio + 1);
+
+  // reglas simples por rangos (seguras)
+  if (ratio >= 20) return Math.round(total * 0.05 / 5) * 5;   // ~5%
+  if (ratio >= 15) return Math.round(total * 0.06 / 5) * 5;   // ~6%
+  if (ratio >= 12) return Math.round(total * 0.08 / 5) * 5;   // ~7.7-8%
+  if (ratio >= 10) return Math.round(total * 0.10 / 5) * 5;   // ~9-10%
+  if (ratio >= 8)  return Math.round(total * 0.12 / 5) * 5;   // ~11-12%
+  return Math.round(apcExact / 5) * 5;
 }
 
 function fmt(n, exact){
@@ -109,37 +178,124 @@ function fmt(n, exact){
   return n.toFixed(dec);
 }
 
-function compute(ratio){
+// Estado
+let lastKey = null;
+let lastBaseRatio = 15;
+
+function compute(baseRatio){
+  const total = parseFloat(document.getElementById('total').value);
   const mode = document.getElementById('mode').value;
   const measure = document.getElementById('measure').value;
+  const zone = document.getElementById('zone').value;
   const exact = (measure === 'exact');
 
-  let r = ratio;
+  let r = baseRatio;
+
+  // aplicar zona (sobre base)
+  r = zoneAdjust(r, zone);
+
+  // aplicar vapor (al final para seguridad)
   if (mode === 'vapor') r = vaporBoost(r);
 
-  let apc = TOTAL / (r + 1);
-  if (!exact) apc = roundEasy(r, apc);
+  // calcular mezcla
+  let apc = total / (r + 1);
+  if (!exact) apc = roundEasy(total, r);
 
-  const water = TOTAL - apc;
+  const water = total - apc;
 
-  // output
+  // UI
   document.getElementById('mix').textContent =
     `APC ${fmt(apc, exact)} ml  •  Agua ${fmt(water, exact)} ml`;
 
   document.getElementById('meta').textContent =
-    `${mode === 'vapor' ? 'Vapor' : 'Normal'} • ${r}:1 (agua:APC) • Total 500 ml`;
+    `${mode === 'vapor' ? 'Vapor' : 'Normal'} • Zona: ${zoneName(zone)} • ${r}:1 (agua:APC) • Total ${total} ml`;
 
-  // show tip for light interiors / high ratios
-  document.getElementById('tips').style.display = (r >= 15) ? 'block' : 'none';
+  // tips para claros
+  const showTips = (r >= 15) || (lastKey && (lastKey.includes("blanco") || lastKey === "claro"));
+  document.getElementById('tips').style.display = showTips ? 'block' : 'none';
+
+  // quick note
+  const q = document.getElementById('quick');
+  q.style.display = 'block';
+  q.innerHTML = quickAdvice(mode, zone, r);
 }
 
+function zoneName(z){
+  return ({
+    dash:"Tablero",
+    doors:"Puertas",
+    console:"Consola",
+    wheel:"Volante",
+    lower:"Plásticos bajos"
+  })[z] || z;
+}
+
+function quickAdvice(mode, zone, r){
+  const lines = [];
+  if (mode === "vapor") lines.push("✔️ Pre-spray ligero → vapor suave → microfibra seca inmediato.");
+  if (zone === "console") lines.push("✔️ Consola: ok un poco más fuerte, pero no empapar botones.");
+  if (zone === "dash") lines.push("✔️ Tablero: mejor más diluido, 2 pasadas suaves.");
+  if (zone === "wheel") lines.push("✔️ Volante: NO empapar, limpiar y secar al instante.");
+  if (r <= 8) lines.push("⚠️ Mezcla fuerte: evita piano black, pantallas y zonas sensibles.");
+  lines.push("🚫 Pantallas: solo paño + limpiador de pantalla (sin APC / sin vapor).");
+  return lines.join("<br>");
+}
+
+// Preset button
 function pick(key){
-  const base = RATIOS[key] ?? 12;
+  lastKey = key;
+  lastBaseRatio = BASE[key] ?? 12;
   document.getElementById('label').textContent = `Preset: ${key.replaceAll('_',' ')}`;
-  compute(base);
+  compute(lastBaseRatio);
 }
 
-// inicia con un preset seguro tipo Lucie
+// Recalcular cuando cambie algo
+["total","mode","measure","zone"].forEach(id=>{
+  document.getElementById(id).addEventListener("change", ()=>compute(lastBaseRatio));
+});
+
+// Favorito
+const FAV_KEY = "kairos_mix_favorite_v1";
+
+function saveFav(){
+  const fav = {
+    total: document.getElementById('total').value,
+    mode: document.getElementById('mode').value,
+    measure: document.getElementById('measure').value,
+    zone: document.getElementById('zone').value,
+    lastKey,
+    lastBaseRatio
+  };
+  localStorage.setItem(FAV_KEY, JSON.stringify(fav));
+  document.getElementById('label').textContent = `📌 Favorito guardado (${lastKey ?? "custom"})`;
+}
+
+function loadFav(){
+  const raw = localStorage.getItem(FAV_KEY);
+  if(!raw){
+    document.getElementById('label').textContent = "⭐ No hay favorito guardado todavía.";
+    return;
+  }
+  const fav = JSON.parse(raw);
+  document.getElementById('total').value = fav.total ?? "500";
+  document.getElementById('mode').value = fav.mode ?? "normal";
+  document.getElementById('measure').value = fav.measure ?? "exact";
+  document.getElementById('zone').value = fav.zone ?? "dash";
+  lastKey = fav.lastKey ?? "blanco_gris";
+  lastBaseRatio = fav.lastBaseRatio ?? 15;
+  document.getElementById('label').textContent = `⭐ Favorito: ${String(lastKey).replaceAll('_',' ')}`;
+  compute(lastBaseRatio);
+}
+
+function resetUI(){
+  document.getElementById('total').value="500";
+  document.getElementById('mode').value="normal";
+  document.getElementById('measure').value="exact";
+  document.getElementById('zone').value="dash";
+  pick('blanco_gris');
+}
+
+// Inicial (Lucie safe)
 pick('blanco_gris');
 </script>
 </body>
